@@ -1,95 +1,78 @@
-import math
 from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
-import quandl
 from matplotlib import style
 from sklearn import preprocessing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-df = quandl.get('WIKI/GOOGL')
-df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
+from regression import load_sample_data_for_linear_regression
 
-df['HL_PCT'] = (df['Adj. High'] - df['Adj. Close']) / df['Adj. Close'] * 100
-df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) / df['Adj. Open'] * 100
+if __name__ == '__main__':
+    df, forecast_col, forecast_out = load_sample_data_for_linear_regression()
 
-df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
+    ##
+    # features = X
+    ##
 
-forecast_col = 'Adj. Close'
-forecast_out = int(math.ceil(0.01 * len(df)))  # no. of days in future
+    X = np.array(df.drop('label', 1))
 
-print("days in advance: ", forecast_out)
+    # scaling features...
+    X = preprocessing.scale(X)
 
-# giving default to the data without any defined values
-df.fillna(-99999, inplace = True)
+    X = X[:-forecast_out]
+    X_lately = X[-forecast_out:]  # we don't have y - values for...
 
-# will get `forecast_out` days shifted
-df['label'] = df[forecast_col].shift(-forecast_out)
+    ##
+    # label = y
+    ##
 
-##
-# features = X
-##
+    # dropping data with no future data
+    df.dropna(inplace = True)
+    y = np.array(df['label'])
 
-X = np.array(df.drop('label', 1))
+    # training and test data sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 
-# scaling features...
-X = preprocessing.scale(X)
+    classifier = LinearRegression()
+    classifier.fit(X_train, y_train)  # training the classifier
+    accuracy = classifier.score(X_test, y_test)
+    print("'Linear Regression' accuracy: ", accuracy)
 
-X = X[:-forecast_out]
-X_lately = X[-forecast_out:]  # we don't have y - values for...
+    forecast_set = classifier.predict(X_lately)
+    # print("Forecast: ")
+    # for v in forecast_set:
+    #     print(f" - {v}")
 
-##
-# label = y
-##
+    ##
+    # plotting the data
+    ##
 
-# dropping data with no future data
-df.dropna(inplace = True)
-y = np.array(df['label'])
+    df['Forecast'] = np.nan
+    # print(df.head())
 
-# training and test data sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+    last_date = df.iloc[-1].name
+    last_unix = last_date.timestamp()
+    one_day = 86400
+    next_unix = last_unix + one_day
 
-classifier = LinearRegression()
-classifier.fit(X_train, y_train)  # training the classifier
-accuracy = classifier.score(X_test, y_test)
-print("'Linear Regression' accuracy: ", accuracy)
+    for i in forecast_set:
+        next_date = datetime.fromtimestamp(next_unix)
+        next_unix += one_day
 
-forecast_set = classifier.predict(X_lately)
-# print("Forecast: ")
-# for v in forecast_set:
-#     print(f" - {v}")
+        # print(next_unix, next_date, wit + [i])
+        df.loc[next_date] = [np.nan for _ in range(len(df.columns) - 1)] + [i]
 
-##
-# plotting the data
-##
+    style.use('ggplot')
 
-df['Forecast'] = np.nan
+    df['Adj. Close'].plot()
+    df['Forecast'].plot()
+    plt.legend(loc = 4)
+    plt.xlabel('Date')
+    plt.ylabel('Price')
+    plt.show()
 
-print(df.head())
-
-last_date = df.iloc[-1].name
-last_unix = last_date.timestamp()
-one_day = 86400
-next_unix = last_unix + one_day
-
-for i in forecast_set:
-    next_date = datetime.fromtimestamp(next_unix)
-    next_unix += one_day
-
-    # print(next_unix, next_date, wit + [i])
-    df.loc[next_date] = [np.nan for _ in range(len(df.columns) - 1)] + [i]
-
-style.use('ggplot')
-
-df['Adj. Close'].plot()
-df['Forecast'].plot()
-plt.legend(loc = 4)
-plt.xlabel('Date')
-plt.ylabel('Price')
-plt.show()
-
-# fname = f"../share/.transient/{datetime.now()}.png"
-# with open(fname, "x") as f:
-#     plt.savefig(fname)
+    # fname = f"../share/.transient/{datetime.now()}.png"
+    # with open(fname, "x") as f:
+    #     plt.savefig(fname)

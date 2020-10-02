@@ -95,7 +95,7 @@ sdist/
 var/
 wheels/
 pip-wheel-metadata/
-share/python-wheels/
+shared/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -289,6 +289,6 @@ fabric.properties
 ## custom project specific
 
 /assets/*
-share/.config/*
-share/.logs/*
-share/.transient/*
+shared/.config/*
+shared/.logs/*
+shared/.transient/*
