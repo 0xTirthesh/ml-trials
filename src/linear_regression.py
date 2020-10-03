@@ -1,13 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import style
 
 from utils.commons import best_fit_slope_and_intercept, coefficient_of_determination
+
+style.use('fivethirtyeight')
 
 PLOT_XY = False
 PLOT_XY_PREDICT = True
 
 xs = np.array([1, 2, 3, 4, 5, 6], dtype = np.float64)
-ys = np.array([2, 6, 1, 8, 9, 4], dtype = np.float64)
+ys = np.array([7, 12, 16, 19, 21, 25], dtype = np.float64)
 
 if PLOT_XY:
     plt.scatter(xs, ys)
