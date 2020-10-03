@@ -21,8 +21,8 @@ if __name__ == '__main__':
     # scaling features...
     X = preprocessing.scale(X)
 
-    X = X[:-forecast_out]
     X_lately = X[-forecast_out:]  # we don't have y - values for...
+    X = X[:-forecast_out]
 
     ##
     # label = y

@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib import style
 
-from utils.commons import best_fit_slope_and_intercept, coefficient_of_determination
+from utils.commons import best_fit_slope_and_intercept, coefficient_of_determination, create_dataset
 
 style.use('fivethirtyeight')
 
 PLOT_XY = False
 PLOT_XY_PREDICT = True
 
-xs = np.array([1, 2, 3, 4, 5, 6], dtype = np.float64)
-ys = np.array([7, 12, 16, 19, 21, 25], dtype = np.float64)
+xs, ys = create_dataset(99, 25, 2, correlation = 'pos')
 
 if PLOT_XY:
     plt.scatter(xs, ys)
@@ -24,7 +22,7 @@ print("Intercept: ", b)
 # model: y = mx + b
 regression_line = [(m * x) + b for x in xs]
 
-predict_x = 8
+predict_x = 100
 predict_y = m * predict_x + b
 
 r_squared = coefficient_of_determination(ys, regression_line)
@@ -33,6 +31,6 @@ print("R-squared: ", r_squared)
 
 if PLOT_XY_PREDICT:
     plt.scatter(xs, ys)
-    plt.scatter(predict_x, predict_y, color = 'g')
+    plt.scatter(predict_x, predict_y, s = 100, color = 'g')
     plt.plot(xs, regression_line)
     plt.show()

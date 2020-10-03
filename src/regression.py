@@ -17,7 +17,7 @@ def load_sample_data_for_linear_regression():
     df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
     forecast_col = 'Adj. Close'
-    forecast_out = int(math.ceil(0.01 * len(df)))  # no. of days in future
+    forecast_out = int(math.ceil(0.1 * len(df)))  # no. of days in future
 
     print("days in advance: ", forecast_out)
 
