@@ -7,7 +7,7 @@ from sklearn import preprocessing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-from regression import load_sample_data_for_linear_regression
+from regression.example import load_sample_data_for_linear_regression
 
 if __name__ == '__main__':
     df, forecast_col, forecast_out = load_sample_data_for_linear_regression()
