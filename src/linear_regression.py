@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils.commons import best_fit_slope_and_intercept
+from utils.commons import best_fit_slope_and_intercept, coefficient_of_determination
 
 PLOT_XY = False
 PLOT_XY_PREDICT = True
@@ -23,6 +23,10 @@ regression_line = [(m * x) + b for x in xs]
 
 predict_x = 8
 predict_y = m * predict_x + b
+
+r_squared = coefficient_of_determination(ys, regression_line)
+
+print("R-squared: ", r_squared)
 
 if PLOT_XY_PREDICT:
     plt.scatter(xs, ys)
