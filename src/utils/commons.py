@@ -1,8 +1,17 @@
+import logging
+import logging.config
 import random
 from statistics import mean
 from typing import Optional
 
 import numpy as np
+
+from settings import CONFIG_DIR
+
+
+def init_logging():
+    logging.config.fileConfig(f'{CONFIG_DIR}/logging.conf')
+    return
 
 
 def best_fit_slope_and_intercept(x_values, y_values):
