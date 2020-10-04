@@ -4,20 +4,6 @@ from collections import Counter
 import numpy as np
 from matplotlib import style
 
-style.use('fivethirtyeight')
-
-# plot_1 = [1, 3]
-# plot_2 = [2, 5]
-# euclidean_distance = sqrt(((plot_1[0] - plot_2[0]) ** 2) + (plot_1[1] - plot_2[1]) ** 2)
-# print(euclidean_distance)
-
-dataset = {'g': [[1, 2], [2, 3], [3, 1]], 'r': [[6, 5], [7, 7], [8, 6]]}
-new_feature = [5, 7]
-
-
-# [[plt.scatter(ii[0], ii[1], s = 100, color = i) for ii in dataset[i]] for i in dataset]
-# plt.scatter(new_feature[0], new_feature[1], s = 100)
-# plt.show()
 
 def k_nearest_distance(data, predict, k = 3):
     if len(data) >= k:
@@ -49,5 +35,20 @@ def k_nearest_distance(data, predict, k = 3):
     return vote_result
 
 
-result = k_nearest_distance(dataset, new_feature, k = 3)
-print(result)
+if __name__ == '__main__':
+    style.use('fivethirtyeight')
+
+    # plot_1 = [1, 3]
+    # plot_2 = [2, 5]
+    # euclidean_distance = sqrt(((plot_1[0] - plot_2[0]) ** 2) + (plot_1[1] - plot_2[1]) ** 2)
+    # print(euclidean_distance)
+
+    dataset = {'g': [[1, 2], [2, 3], [3, 1]], 'r': [[6, 5], [7, 7], [8, 6]]}
+    new_feature = [5, 7]
+
+    # [[plt.scatter(ii[0], ii[1], s = 100, color = i) for ii in dataset[i]] for i in dataset]
+    # plt.scatter(new_feature[0], new_feature[1], s = 100)
+    # plt.show()
+
+    result = k_nearest_distance(dataset, new_feature, k = 3)
+    print('Result: ', result)
