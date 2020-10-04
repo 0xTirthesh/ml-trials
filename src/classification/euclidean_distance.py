@@ -32,7 +32,8 @@ def k_nearest_distance(data, predict, k = 3):
     # print('Most Common: ', Counter(votes).most_common(1))
 
     vote_result = Counter(votes).most_common(1)[0][0]
-    return vote_result
+    confidence = Counter(votes).most_common(1)[0][1] / k
+    return vote_result, confidence
 
 
 if __name__ == '__main__':
@@ -50,5 +51,6 @@ if __name__ == '__main__':
     # plt.scatter(new_feature[0], new_feature[1], s = 100)
     # plt.show()
 
-    result = k_nearest_distance(dataset, new_feature, k = 3)
+    result, _confidence = k_nearest_distance(dataset, new_feature, k = 3)
     print('Result: ', result)
+    print('Confidence: ', _confidence)

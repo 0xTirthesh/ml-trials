@@ -36,7 +36,7 @@ total = 0
 
 for group in test_set:
     for data in test_set[group]:
-        vote = k_nearest_distance(train_set, data, k = 5)
+        vote, _ = k_nearest_distance(train_set, data, k = 5)
         if group == vote:
             correct += 1
         total += 1
