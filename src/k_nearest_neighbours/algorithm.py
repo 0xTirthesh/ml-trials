@@ -1,7 +1,7 @@
 import logging
 import random
 
-from classification.euclidean_distance import k_nearest_distance
+from k_nearest_neighbours.euclidean_distance import k_nearest_distance
 from utils.commons import init_logging
 from utils.data_sets import load_breast_cancer_wisconsin_data
 
